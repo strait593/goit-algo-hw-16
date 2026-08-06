@@ -241,64 +241,68 @@ def evaluate_performance(model_type):
     except Exception as e:
         st.error(f"Performance display error: {e}")
 
-# UI part of my dashboard
-st.set_page_config(page_title="Fashion Classifier")
+def main():
+    st.set_page_config(page_title="Fashion Classifier")
 
-st.title("Fashion-MNIST Clothing Classifier")
+    st.title("Fashion-MNIST Clothing Classifier")
 
-choice = st.radio(
-    "Choose model",
-    ["VGG16", "Self-made model"]
-)
-
-uploaded_file = st.file_uploader(
-    "Upload an image",
-    type=["jpg", "jpeg", "png"]
-)
-
-if uploaded_file is not None:
-
-    file_bytes = np.asarray(
-        bytearray(uploaded_file.read()),
-        dtype=np.uint8
+    choice = st.radio(
+        "Choose model",
+        ["VGG16", "Self-made model"]
     )
 
-    img = cv2.imdecode(
-        file_bytes,
-        cv2.IMREAD_COLOR
+    uploaded_file = st.file_uploader(
+        "Upload an image",
+        type=["jpg", "jpeg", "png"]
     )
 
-    if img is None:
+    if uploaded_file is not None:
 
-        st.error("Unable to read image.")
+        file_bytes = np.asarray(
+            bytearray(uploaded_file.read()),
+            dtype=np.uint8
+        )
 
-    else:
+        img = cv2.imdecode(
+            file_bytes,
+            cv2.IMREAD_COLOR
+        )
 
-        col1, col2 = st.columns(2)
+        if img is None:
 
-        with col1:
-            st.image(
-                cv2.cvtColor(img, cv2.COLOR_BGR2RGB),
-                use_container_width=True
-            )
+            st.error("Unable to read image.")
 
-        with col2:
+        else:
 
-            prediction, confidence = predict_image(
-                img,
-                choice
-            )
+            col1, col2 = st.columns(2)
 
-            if prediction:
-
-                st.subheader("Prediction")
-                st.success(prediction)
-
-                st.metric(
-                    "Confidence",
-                    f"{confidence:.2%}"
+            with col1:
+                st.image(
+                    cv2.cvtColor(img, cv2.COLOR_BGR2RGB),
+                    use_container_width=True
                 )
 
-        st.divider()
+            with col2:
 
-        evaluate_performance(choice)
+                prediction, confidence = predict_image(
+                    img,
+                    choice
+                )
+
+                if prediction:
+
+                    st.subheader("Prediction")
+                    st.success(prediction)
+
+                    st.metric(
+                        "Confidence",
+                        f"{confidence:.2%}"
+                    )
+
+            st.divider()
+
+            evaluate_performance(choice)
+
+
+if __name__ == "__main__":
+    main()

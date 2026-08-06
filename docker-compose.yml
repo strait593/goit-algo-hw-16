@@ -1,0 +1,17 @@
+services:
+  fashion-classifier:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+      - models:/app/models
+      - cache:/app/.streamlit
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_SERVER_RUNONSAVE=true
+    command: streamlit run app.py --server.port=8501 --server.address=0.0.0.0
+
+volumes:
+  models:
+  cache:
