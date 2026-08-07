@@ -1,4 +1,4 @@
-# Project README
+# Churn Classification project
 
 ## Project Overview
 This repository contains the final project for the GoIT data science track. The project workflow covers data preparation, exploratory data analysis (EDA), model creation, and dashboard construction.
